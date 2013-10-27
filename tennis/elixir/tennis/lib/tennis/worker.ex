@@ -20,7 +20,8 @@ defmodule Tennis.Worker do
   end
 
   def init(_) do
-    { :ok, @initial_state }
+    crash_state = Tennis.State.restore
+    { :ok, crash_state || @initial_state }
   end
 
   def handle_call({:score, player}, _from, current_state) do
@@ -30,6 +31,10 @@ defmodule Tennis.Worker do
 
   def handle_cast(:restart, _current_state) do
     { :noreply, @initial_state }
+  end
+
+  def terminate(_reason, current_state) do
+    Tennis.State.save current_state
   end
 
   def format_status(_reason, [ _pdict, state ]) do

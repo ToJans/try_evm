@@ -1,9 +1,12 @@
 defrecord GameState.Won,  by: nil
 
 defmodule Tennis.Game do
+
   def score(player, game_state = [playerA: _, playerB: _]) do
     next_game_state(player, game_state)
   end
+
+  def score(player, state = GameState.Won[by: _]),  do: state
 
   defp next_game_state(player, [playerA: x, playerB: y]) when x == 40 and y <= 30 or x <= 30 and y == 40 do
     GameState.Won.new(by: player)

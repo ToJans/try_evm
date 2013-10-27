@@ -1,9 +1,9 @@
 defmodule Tennis do
   use Application.Behaviour
 
-  # See http://elixir-lang.org/docs/stable/Application.Behaviour.html
-  # for more information on OTP Applications
-  def start(_type, _args) do
-    Tennis.Supervisor.start_link
-  end
+  def start(_type, _args), do: Tennis.Supervisor.start_link
+  def score(player), do: Tennis.Worker.score(player)
+  def restart, do: Tennis.Worker.restart
+  def status, do: Tennis.Worker.status
+
 end

@@ -11,7 +11,14 @@ defmodule Tennis.Game.Specs do
     [[playerA: 0, playerB: 40], :playerB, Game[for: :playerB]],
     [[playerA: 0, playerB: 40], :playerA, [playerA: 15, playerB: 40]],
     [Game[for: :playerB], :playerA, Game[for: :playerB]],
-    [Game[for: :playerA], :playerA, Game[for: :playerA]]
+    [Game[for: :playerA], :playerA, Game[for: :playerA]],
+    [[playerA: 30, playerB: 40], :playerA, :duce],
+    [[playerA: 40, playerB: 30], :playerB, :duce],
+    [:deuce, :playerB, Advantage[for: :playerB]],
+    [Advantage[for: :playerB], :playerA, :deuce],
+    [Advantage[for: :playerA], :playerB, :deuce],
+    [Advantage[for: :playerA], :playerA, Game[for: :playerA]],
+    [Advantage[for: :playerB], :playerB, Game[for: :playerB]],
   ]
 
   lc [state, player, expected_state] inlist fixtures do
@@ -19,7 +26,7 @@ defmodule Tennis.Game.Specs do
     @state  state
     @expected_state expected_state
 
-    test "For current state #{inspect(state)} when player <#{player}> scores, the new state should be #{inspect(expected_state)}" do
+    test "For state <#{inspect(state)}> when <#{player}> scores, the new state should be <#{inspect(expected_state)}>" do
       score(@player, @state) |> equals @expected_state
     end
   end

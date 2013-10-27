@@ -5,7 +5,7 @@ defmodule Tennis.Game do
 
   def score(player, game_state), do: next_game_state(player, game_state)
 
-  defp next_game_state(player, state = Game[for: _]),  do: state
+  defp next_game_state(_, state = Game[for: _]),  do: state
 
   defp next_game_state(player, :deuce),  do: Advantage.new(for: player)
 
@@ -22,7 +22,7 @@ defmodule Tennis.Game do
   defp next_game_state(player, [playerA: x, playerB: y])
     when x == 40 and y == 30 and player == :playerB or
          x == 30 and y == 40 and player == :playerA do
-    :duce
+    :deuce
   end
 
   defp next_game_state(player, game_state = [playerA: _, playerB: _]) do

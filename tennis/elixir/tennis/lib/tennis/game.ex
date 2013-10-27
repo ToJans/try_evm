@@ -8,7 +8,9 @@ defmodule Tennis.Game do
 
   def score(player, state = GameState.Won[by: _]),  do: state
 
-  defp next_game_state(player, [playerA: x, playerB: y]) when x == 40 and y <= 30 or x <= 30 and y == 40 do
+  defp next_game_state(player, [playerA: x, playerB: y])
+    when x == 40 and y <= 30 and player == :playerA or
+         x <= 30 and y == 40 and player == :playerB do
     GameState.Won.new(by: player)
   end
 

@@ -9,6 +9,7 @@ defmodule Tennis.Game.Specs do
     [[playerA: 30, playerB: 0], :playerB, [playerA: 30, playerB: 15]],
     [[playerA: 40, playerB: 0], :playerA, GameState.Won[by: :playerA]],
     [[playerA: 0, playerB: 40], :playerB, GameState.Won[by: :playerB]],
+    [[playerA: 0, playerB: 40], :playerA, [playerA: 15, playerB: 40]],
     [GameState.Won[by: :playerB], :playerA, GameState.Won[by: :playerB]],
     [GameState.Won[by: :playerA], :playerA, GameState.Won[by: :playerA]]
   ]

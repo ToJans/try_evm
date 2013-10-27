@@ -3,8 +3,12 @@ defmodule Tennis.Game.Specs do
   import Tennis.Game
 
   fixtures = [
-    [GameState.new, :playerA, GameState.new(score: [playerA: 15, playerB: 0])],
-    [GameState.new(score: [playerA: 15, playerB: 0]), :playerA, GameState.new(score: [playerA: 30, playerB: 0])]
+    [[playerA: 0, playerB: 0], :playerA, [playerA: 15, playerB: 0]],
+    [[playerA: 15, playerB: 0], :playerA, [playerA: 30, playerB: 0]],
+    [[playerA: 30, playerB: 0], :playerA, [playerA: 40, playerB: 0]],
+    [[playerA: 30, playerB: 0], :playerB, [playerA: 30, playerB: 15]],
+    [[playerA: 40, playerB: 0], :playerA, GameState.Won[by: :playerA]],
+    [[playerA: 0, playerB: 40], :playerB, GameState.Won[by: :playerB]]
   ]
 
   lc [state, player, expected_state] inlist fixtures do

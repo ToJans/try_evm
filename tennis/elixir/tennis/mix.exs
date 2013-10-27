@@ -14,7 +14,8 @@ defmodule Tennis.Mixfile do
 
   defp deps do
     [
-      { :amrita, "~> 0.2", github: "josephwilk/amrita" }
+      { :amrita,  "~> 0.2", github: "josephwilk/amrita" },
+      { :exactor, "~> 0.1", github: "sasa1977/exactor" }
     ]
   end
 end

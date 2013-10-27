@@ -1,28 +1,12 @@
 defmodule Tennis.State do
-  use GenServer.Behaviour
-  @worker_name :tennis_state
+  use ExActor, export: :tennis_state
 
-  def start_link do
-    :gen_server.start_link({:local, @worker_name}, __MODULE__, [], [debug: [:trace, :statistics]])
+  defcast save(state) do
+    new_state(state)
   end
 
-  def save(state) do
-    :gen_server.cast(@worker_name, {:save, state})
+  defcall restore, state: current_state do
+    reply(current_state, current_state)
   end
 
-  def restore do
-    :gen_server.call(@worker_name, :restore)
-  end
-
-  def init(_) do
-    { :ok, nil }
-  end
-
-  def handle_cast({:save, state}, _current_state) do
-    { :noreply, state }
-  end
-
-  def handle_call(:restore, _from, current_state) do
-    { :reply, current_state, current_state }
-  end
 end

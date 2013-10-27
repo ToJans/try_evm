@@ -1,43 +1,26 @@
 defmodule Tennis.Worker do
-  use GenServer.Behaviour
-  @worker_name :tennis_worker
+  use ExActor, export: :tennis_worker
+
   @initial_state [playerA: 0, playerB: 0]
 
-  def start_link do
-    :gen_server.start_link({:local, @worker_name}, __MODULE__, [], [debug: [:trace, :statistics]])
+  definit do
+    Tennis.State.restore || @initial_state
   end
 
-  def score(player) do
-    :gen_server.call(@worker_name, {:score, player})
+  defcall score(player), state: current_state do
+    next = Tennis.Game.score(player, current_state)
+    reply(next, next)
   end
 
-  def status do
-    :sys.get_status @worker_name
+  defcall status, state: current_state do
+    reply(current_state, current_state)
   end
 
-  def restart do
-    :gen_server.cast(@worker_name, :restart)
-  end
-
-  def init(_) do
-    crash_state = Tennis.State.restore
-    { :ok, crash_state || @initial_state }
-  end
-
-  def handle_call({:score, player}, _from, current_state) do
-    next_state = Tennis.Game.score(player, current_state)
-    { :reply, next_state, next_state }
-  end
-
-  def handle_cast(:restart, _current_state) do
-    { :noreply, @initial_state }
+  defcast restart do
+    new_state(@initial_state)
   end
 
   def terminate(_reason, current_state) do
-    Tennis.State.save current_state
-  end
-
-  def format_status(_reason, [ _pdict, state ]) do
-    [data: [{'State', "The current game state is '#{inspect state}'"}]]
+    current_state |> Tennis.State.save
   end
 end

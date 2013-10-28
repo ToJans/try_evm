@@ -6,9 +6,11 @@ defmodule Tennis.Supervisor do
   end
 
   def init(_) do
+    options = [debug: [:trace]]
+
     children = [
-      worker(Tennis.State, []),
-      worker(Tennis.Worker, [])
+      worker(Tennis.State, [nil, options]),
+      worker(Tennis.Worker,[nil, options])
     ]
 
     supervise children, strategy: :one_for_one

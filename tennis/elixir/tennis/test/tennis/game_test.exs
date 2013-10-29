@@ -26,8 +26,10 @@ defmodule Tennis.Game.Specs do
     @state  state
     @expected_state expected_state
 
-    test "For state <#{inspect(state)}> when <#{player}> scores, the new state should be <#{inspect(expected_state)}>" do
-      score(@player, @state) |> equals @expected_state
+    facts "For state <#{inspect(state)}>" do
+      fact "when <#{player}> scores, the new state should be <#{inspect(expected_state)}>" do
+        score(@player, @state) |> equals @expected_state
+      end
     end
   end
 end

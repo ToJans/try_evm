@@ -29,12 +29,14 @@ next_game_state(playerB, [{playerA, X}, {playerB, Y}]) when X == 30, Y == 40 ->
   deuce;
 
 next_game_state(Player, GameState) ->
-  OldScore = list:keyfind(Player, 1, GameState),
-  list:keymerge(GameState, 1, GameState, [{Player, new_player_score(OldScore)}]).
+  {_, OldScore} = lists:keyfind(Player, 1, GameState),
+  lists:keymerge(1, GameState, [{Player, new_player_score(OldScore)}]).
 
-new_player_score(score) ->
-  case score of 
-    0  -> 15;
-    15 -> 30;
-    30 -> 40
-  end.
+new_player_score(0) ->
+  15;
+
+new_player_score(15) ->
+  30;
+
+new_player_score(30) ->
+  40.

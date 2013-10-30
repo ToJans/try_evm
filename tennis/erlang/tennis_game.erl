@@ -1,7 +1,7 @@
-- module(tennis_game).
-- export([score/2]).
+-module(tennis_game).
+-export([score/2]).
 
-score(Player, CurrentState) -> 
+score(Player, CurrentState) ->
   next_game_state(Player, CurrentState).
 
 next_game_state(_, CurrentState = {game, _}) ->
@@ -14,33 +14,27 @@ next_game_state(Player, {advantage, OtherPlayer}) when Player =/= OtherPlayer ->
   deuce;
 
 next_game_state(Player, {advantage, _}) ->
-  {game, Player}.
+  {game, Player};
 
-%next_game_state(Player, [{playerA, X}, {playerB, Y}]) 
-  %when X == 40 and Y <= 30 and Player == playerA or
-       %X <= 30 and Y == 40 and Player == playerB ->
-  %{game, Player}.
+next_game_state(playerA, [{playerA, X}, {playerB, Y}]) when X == 40, Y =< 30 ->
+  {game, playerA};
 
-%defp next_game_state(player, [playerA: x, playerB: y])
-  %when x == 40 and y <= 30 and player == :playerA or
-       %x <= 30 and y == 40 and player == :playerB do
-  %Game.new(for: player)
-  %defp next_game_state(player, [playerA: x, playerB: y])
-    %when x == 40 and y == 30 and player == :playerB or
-         %x == 30 and y == 40 and player == :playerA do
-    %:deuce
-  %end
+next_game_state(playerB, [{playerA, X}, {playerB, Y}]) when X =< 30, Y == 40 ->
+  {game, playerB};
 
-  %defp next_game_state(player, game_state = [playerA: _, playerB: _]) do
-    %old_score = Keyword.get(game_state, player)
-    %Keyword.put(game_state, player, new_player_score(old_score)) |> Enum.sort
-  %end
+next_game_state(playerA, [{playerA, X}, {playerB, Y}]) when X == 40, Y == 30 ->
+  deuce;
 
-  %defp new_player_score(score) do
-    %case score do
-      %0  -> 15
-      %15 -> 30
-      %30 -> 40
-    %end
-  %end
-%end
+next_game_state(playerB, [{playerA, X}, {playerB, Y}]) when X == 30, Y == 40 ->
+  deuce;
+
+next_game_state(Player, GameState) ->
+  OldScore = list:keyfind(Player, 1, GameState),
+  list:keymerge(GameState, 1, GameState, [{Player, new_player_score(OldScore)}]).
+
+new_player_score(score) ->
+  case score of 
+    0  -> 15;
+    15 -> 30;
+    30 -> 40
+  end.

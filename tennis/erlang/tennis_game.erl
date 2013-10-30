@@ -22,15 +22,15 @@ next_game_state(playerA, [{playerA, X}, {playerB, Y}]) when X == 40, Y =< 30 ->
 next_game_state(playerB, [{playerA, X}, {playerB, Y}]) when X =< 30, Y == 40 ->
   {game, playerB};
 
-next_game_state(playerA, [{playerA, X}, {playerB, Y}]) when X == 40, Y == 30 ->
+next_game_state(playerA, [{playerA, X}, {playerB, Y}]) when X == 30, Y == 40 ->
   deuce;
 
-next_game_state(playerB, [{playerA, X}, {playerB, Y}]) when X == 30, Y == 40 ->
+next_game_state(playerB, [{playerA, X}, {playerB, Y}]) when X == 40, Y == 30 ->
   deuce;
 
 next_game_state(Player, GameState) ->
   {_, OldScore} = lists:keyfind(Player, 1, GameState),
-  lists:keymerge(1, GameState, [{Player, new_player_score(OldScore)}]).
+  lists:keyreplace(Player, 1, GameState, {Player, new_player_score(OldScore)}).
 
 new_player_score(0) ->
   15;

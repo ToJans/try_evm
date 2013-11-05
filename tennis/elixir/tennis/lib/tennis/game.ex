@@ -6,15 +6,14 @@ defmodule Tennis.Game do
 
   defp next_game_state(player, :deuce),  do: [advantage: player]
 
-  defp next_game_state(player, [advantage: other_player]) when player != other_player, do: :deuce
+  defp next_game_state(player, [advantage: player]), do: [game: player]
+  defp next_game_state(player, [advantage: _]), do: :deuce
 
-  defp next_game_state(player, [advantage: _]), do: [game: player]
+  defp next_game_state(:playerB, [playerA: 40, playerB: 30]), do: :deuce
+  defp next_game_state(:playerA, [playerA: 30, playerB: 40]), do: :deuce
 
-  defp next_game_state(:playerA, [playerA: x, playerB: y]) when x == 40 and y <= 30, do: [game: :playerA]
-  defp next_game_state(:playerB, [playerA: x, playerB: y]) when x <= 30 and y == 40, do: [game: :playerB]
-
-  defp next_game_state(:playerB, [playerA: x, playerB: y]) when x == 40 and y == 30, do: :deuce 
-  defp next_game_state(:playerA, [playerA: x, playerB: y]) when x == 30 and y == 40, do: :deuce 
+  defp next_game_state(:playerA, [playerA: 40, playerB: _]), do: [game: :playerA]
+  defp next_game_state(:playerB, [playerA: _, playerB: 40]), do: [game: :playerB]
 
   defp next_game_state(player, game_state = [playerA: _, playerB: _]) do
     old_score = Keyword.get(game_state, player)

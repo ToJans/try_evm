@@ -16,7 +16,7 @@ defmodule Tennis.Game do
   defp next_game_state(:playerB, [playerA: _, playerB: 40]), do: [game: :playerB]
 
   defp next_game_state(player, game_state = [playerA: _, playerB: _]) do
-    Keyword.update!(game_state, player, 0, &new_player_score/1)
+    Keyword.update!(game_state, player, &new_player_score/1)
   end
 
   defp new_player_score(0), do: 15
